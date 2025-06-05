@@ -9,12 +9,12 @@
     body { 
       font-family: 'Noto Sans KR', sans-serif; 
       padding: 0; 
-      background: #f9f9f9; 
+      background:#fefde1; 
       margin: 0;
     }
     .container { 
-      background: #fff; 
-      padding: 5vw 3vw; /* 모바일에서 좌우 여백 최소화 */
+      background: #fefde1; 
+      padding: 5vw 3vw;
       border-radius: 12px; 
       max-width: 100vw; 
       box-sizing: border-box;
@@ -26,18 +26,15 @@
       flex-direction: column;
       justify-content: center;
     }
-    .center {
-      display: flex;
-      justify-content: center; 
-      align-items: center;       
-      gap: 16px;                 
-    }
     select, button { 
       font-size: 1.2em; 
+      background-color: #fffff1;
       padding: 12px 0;
-      margin: 8px 0;
-      /* width: 70%; */
-      box-sizing: border-box;
+      margin: 10px auto;
+      display: block;
+      width: 60%;
+      justify-content: center;
+      box-sizing: content-box;
     }
     #qrcode { 
       margin-top: 24px; 
@@ -47,7 +44,7 @@
     }
     button {
       background-color: #3395C9;  
-      color: white;               
+      color: #fff;               
       border: none;              
       border-radius: 6px;         
       cursor: pointer;           
@@ -91,27 +88,65 @@
     .input-group label {
       font-size: 1.4em;
     }
+    .center-img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 5vw;
+      width: 50%;
+      height:50%;
+    }
+    .bottom-text {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background: #fefde1;
+      color: #fefde1;
+      text-align: center;
+      padding: 12px 0;
+      z-index: 100;
+      }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>통학버스 QR코드 생성기</h1>
+    <img src="https://www.kumoh.ac.kr/_res/ko/img/common/logo@2x.png" 
+     alt="국립금오공과대학교 로고" class="center-img">
+      <a href="https://www.kumoh.ac.kr/bus/notice.do" 
+        style="color: #1976d2; 
+        text-decoration: underline;
+        text-align:center" 
+        target="_blank" rel="noopener noreferrer">
+          대구통학버스 공지사항 <- 노선 및 시간표
+      </a>
+
     <div class="input_group">
-      <label for="carSelect" style="text-align:left;">통학버스 선택</label>
       <select id="carSelect" aria-label="버스 선택">
+        <option value="" selected disabled hidden>통학버스를 선택하세요</option>
         <option value="1">1호차</option>
         <option value="2">2호차</option>
         <option value="3">3호차</option>
         <option value="4">4호차</option>
         <option value="5">5호차</option>
         <option value="6">6호차</option>
-        <option value="7">7호차</option>
+        <!-- <option value="7">7호차</option> -->
+        <!-- <option value="8">8호차</option> -->
+        <!-- <option value="9">9호차</option> -->
       </select>
       <button id="generateBtn">QR코드 생성</button>
       <div id="qrcode"></div>
       <div id="jsonText" style="margin-top:16px;color:#d7d7d7"></div>
     </div>
+    <div class="bottom-text">
+    <p style="text-align: center; color: #b0b0b0;">
+    verson 1.0
+    <br>개선사항 및 문의 : ccm7958@kumoh.ac.kr
+    <br>너무 남용하지 않도록 합시다... 
+    </p>
+    </div>
   </div>
+  
   <script>
     const generateBtn = document.getElementById('generateBtn');
     const carSelect = document.getElementById('carSelect');
@@ -133,17 +168,27 @@
       // QR코드 생성부분
       qrcodeDiv.innerHTML = '';
       let qrSize = getQRSize();
-      QRCode.toCanvas(jsonStr, { width: qrSize }, function (error, canvas) {
-        if (error) {
-          qrcodeDiv.innerHTML = 'QR코드 생성 오류';
+      QRCode.toCanvas(
+        jsonStr,
+        { 
+          width: qrSize,
+          color: {
+            light: '#fefde1'
+        } 
+      }, 
+        function (error, canvas) {
+        if (error || !carSelect.value) {
+          qrcodeDiv.innerHTML = 'ERROR! 올바르게 선택했는지 확인하세요.';
           return;
         }
         qrcodeDiv.appendChild(canvas);
       });
 
       // QR 재확인
+      if (carSelect.value && carSelect.value !== "0"){
       jsonTextDiv.textContent = carSelect.value+"호차 QR코드 생성 완료!";
       jsonTextDiv.style.textAlign = "center";
+      }
     });
 
     // 화면 크기 변경 시 QR코드 크기도 재조정
@@ -152,6 +197,7 @@
         generateBtn.click();
       }
     });
+
   </script>
 </body>
 </html>
