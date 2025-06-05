@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KitBUS</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+  <style>
+    body { 
+      font-family: 'Noto Sans KR', sans-serif; 
+      padding: 0; 
+      background: #f9f9f9; 
+      margin: 0;
+    }
+    .container { 
+      background: #fff; 
+      padding: 5vw 3vw; /* 모바일에서 좌우 여백 최소화 */
+      border-radius: 12px; 
+      max-width: 100vw; 
+      box-sizing: border-box;
+      margin: 0 auto;
+      box-shadow: 0 2px 8px #0002;
+      width: 100vw;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    select, button { 
+      font-size: 1.2em; 
+      padding: 12px 0;
+      margin: 8px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #qrcode { 
+      margin-top: 24px; 
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    button {
+      background-color: #3395C9;  
+      color: white;               
+      border: none;              
+      border-radius: 6px;         
+      cursor: pointer;           
+      transition: background-color 0.2s;
+    }
+    button:hover, button:active {
+      background-color: #FBEF2F;
+      color: black;
+    }
+    .input_group {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch; 
+      gap: 8px;           
+      margin-bottom: 16px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.6em;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 2vw 2vw;
+        max-width: 100vw;
+        border-radius: 0;
+        min-height: 100vh;
+      }
+      select, button {
+        font-size: 1em;
+        padding: 10px 0;
+      }
+      h1 {
+        font-size: 1.2em;
+      }
+      #qrcode {
+        margin-top: 16px;
+      }
+    }
+    .input-group label {
+      font-size: 1.05em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>통학버스 QR코드 생성기</h1>
+    <div class="input_group">
+      <label for="carSelect" style="text-align:left;">호차 선택</label>
+      <select id="carSelect" aria-label="버스 호차 선택">
+        <option value="1">1호차</option>
+        <option value="2">2호차</option>
+        <option value="3">3호차</option>
+        <option value="4">4호차</option>
+        <option value="5">5호차</option>
+        <option value="6">6호차</option>
+        <option value="7">7호차</option>
+      </select>
+      <button id="generateBtn">QR코드 생성</button>
+      <div id="qrcode"></div>
+      <div id="jsonText" style="margin-top:16px;color:#d7d7d7"></div>
+    </div>
+  </div>
+  <script>
+    const generateBtn = document.getElementById('generateBtn');
+    const carSelect = document.getElementById('carSelect');
+    const qrcodeDiv = document.getElementById('qrcode');
+    const jsonTextDiv = document.getElementById('jsonText');
+
+    function getQRSize() {
+      return Math.min(window.innerWidth * 0.85, 350);
+    }
+
+    generateBtn.addEventListener('click', () => {
+      const carNum = carSelect.value.padStart(3, '0'); // 1 → 001
+      const data = {
+        BUS_CD: `B${carNum}`,
+        BUS_MNG_SE: 1
+      };
+      const jsonStr = JSON.stringify(data);
+
+      // QR코드 생성부분
+      qrcodeDiv.innerHTML = '';
+      let qrSize = getQRSize();
+      QRCode.toCanvas(jsonStr, { width: qrSize }, function (error, canvas) {
+        if (error) {
+          qrcodeDiv.innerHTML = 'QR코드 생성 오류';
+          return;
+        }
+        qrcodeDiv.appendChild(canvas);
+      });
+
+      // QR 재확인
+      jsonTextDiv.textContent = carSelect.value+"호차";
+    });
+
+    // 화면 크기 변경 시 QR코드 크기도 재조정
+    window.addEventListener('resize', () => {
+      if (qrcodeDiv.children.length > 0) {
+        generateBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
