@@ -2,128 +2,105 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KitBUS</title>
+  <title>통학버스 QR</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
   <style>
-    body { 
-      font-family: 'Noto Sans KR', sans-serif; 
-      padding: 0; 
-      background:#fefde1; 
+    body {
+      background: #75787b;
       margin: 0;
-    }
-    .container { 
-      background: #fefde1; 
-      padding: 5vw 3vw;
-      border-radius: 12px; 
-      max-width: 100vw; 
-      box-sizing: border-box;
-      margin: 0 auto;
-      box-shadow: 0 2px 8px #0002;
-      width: 100vw;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    select, button { 
-      font-size: 1.2em; 
-      background-color: #fff;
-      padding: 12px 0;
-      margin: 10px auto;
-      display: block;
-      width: 60%;
-      justify-content: center;
-      box-sizing: content-box;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
     }
     #qrcode { 
-      margin-top: 16px; 
+      margin-top: 20px; 
       display: flex;
       justify-content: center;
-      width: 100%;
     }
-    button {
-      background-color: #3395C9;  
-      color: #fff;               
-      border: none;              
-      border-radius: 6px;         
-      cursor: pointer;           
-      transition: background-color 0.2s;
-    }
-    button:hover, button:active {
-      background-color: #FBEF2F;
-      color: black;
-    }
-    .input_group {
+    .container {
+      background: #fff;
+      border-radius: 24px;
+      max-width: 400px;
+      margin: 40px auto;
+      padding: 32px 24px;
+      box-shadow: 0 4px 24px #0002;
       display: flex;
       flex-direction: column;
-      align-items: stretch; 
-      gap: 8px;           
-      margin-bottom: 16px;
+      align-items: center;
     }
-    h1 {
+    .logo {
+      margin-bottom: 1vw;
+      width: 70vw;
+    }
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 8vw;
+      color: #fff;
       text-align: center;
-      font-size: 1.6em;
-      margin-top: 0.5em;
-      margin-bottom: 1em;
+      text-shadow: 0 2px 8px #0003;
     }
-    @media (max-width: 600px) {
-      .container {
-        padding: 2vw 2vw;
-        max-width: 100vw;
-        border-radius: 0;
-        min-height: 100vh;
-      }
-      select, button {
-        font-size: 1em;
-        padding: 10px 0;
-      }
-      h1 {
-        font-size: 2.0em;
-      }
-      #qrcode {
-        margin-top: 16px;
-      }
-    }
-    .input-group label {
-      font-size: 1.4em;
-    }
-    .center-img {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 5vw;
-      width: 70%;
-      height:70%;
-    }
-    .bottom-text {
-      position: fixed;
-      left: 0;
-      bottom: 0;
+    .select-box {
       width: 100%;
-      background: #00ff0000;
-      color: #fefde1;
+      margin-bottom: 20px;
+    }
+    select {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 12px;
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 2px 8px #0001;
+      outline: 1px #0001;
+    }
+    .qr-btn {
+      width: 100%;
+      background: #1ea7fd;
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 14px 0;
+      border: none;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+    .qr-btn:hover, .qr-btn:active {
+      background: #fbef2f;
+      color: black
+    }
+    .info {
+      color: #ff7f2a;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      font-weight: bold;
       text-align: center;
-      padding: 5px 0;
-      z-index: 100;
-      font-size: 10px;
-      }
+    }
+    .qr-area {
+      background: #fff;
+      padding: 18px;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px #0001;
+      margin-bottom: 20px;
+    }
+    .footer {
+      color: black;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 12px;
+    }
   </style>
 </head>
-<body>
-  <div class="container">
-    <img src="https://www.kumoh.ac.kr/_res/ko/img/common/logo@2x.png" 
-     alt="국립금오공과대학교 로고" class="center-img">
-      <a href="https://www.kumoh.ac.kr/bus/notice.do" 
-        style="color: #1976d2; 
-        text-decoration: underline;
-        text-align:center" 
-        target="_blank" rel="noopener noreferrer">
-          대구통학버스 공지사항 <- 노선 및 시간표
-      </a>
 
-    <div class="input_group">
-      <select id="carSelect" aria-label="버스 선택">
+<body>
+  <div class="title" style="margin-top:24px;">
+    <img src="https://i.namu.wiki/i/lT-MlpxNlxtPdnBhB6ubr55Q4gFiE35pXIbN8tiUXnMcNjP2P0EEOg5hrDPGpMtf4L9unfZzk9gty5tcRHPO8Q.svg" 
+    alt="kit logo" class="logo"><br>
+    통학버스 QR코드
+  </div>
+
+  <div class="container">
+    <div class="select-box">
+      <select id="busSelect">
         <option value="" selected disabled hidden>통학버스를 선택하세요</option>
         <option value="1">1호차</option>
         <option value="2">2호차</option>
@@ -131,35 +108,36 @@
         <option value="4">4호차</option>
         <option value="5">5호차</option>
         <option value="6">6호차</option>
-        <!-- <option value="7">7호차</option> -->
-        <!-- <option value="8">8호차</option> -->
-        <!-- <option value="9">9호차</option> -->
       </select>
-      <button id="generateBtn">QR코드 생성</button>
-      <div id="qrcode"></div>
-      <div id="jsonText" style="margin-top:16px;color:#d7d7d7"></div>
     </div>
-    <div class="bottom-text">
-    <p style="text-align: center; color: #b0b0b0;">
-    verson 1.0
-    <br>개선사항 및 문의 : <code>ccm7958@kumoh.ac.kr</code>
-    <br>너무 남용하지 않도록 합시다... 
-    </p>
+
+    <button class="qr-btn" id="generateBtn">QR 코드 생성</button>
+
+    <div id="jsonText" style="margin-top:16px;color:#d7d7d7"></div>
+
+    <div class="qr-area" id="qrcode">
+      <img src="data:image/png;base64,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" 
+      alt="QR Code" id="qr-img">
+    </div>
+
+    <div class="footer">
+      verson 1.1<br>
+      건의사항 및 문의: ccm7958@kumoh.ac.kr
     </div>
   </div>
-  
+
   <script>
     const generateBtn = document.getElementById('generateBtn');
-    const carSelect = document.getElementById('carSelect');
+    const busSelect = document.getElementById('busSelect');
     const qrcodeDiv = document.getElementById('qrcode');
     const jsonTextDiv = document.getElementById('jsonText');
 
     function getQRSize() {
-      return Math.min(window.innerWidth * 0.85, 350);
+      return Math.min(window.innerWidth * 0.85, 240);
     }
 
     generateBtn.addEventListener('click', () => {
-      const carNum = carSelect.value.padStart(3, '0'); // 1 → 001
+      const carNum = busSelect.value.padStart(3, '0'); // 1 → 001
       const data = {
         BUS_CD: `B${carNum}`,
         BUS_MNG_SE: 1
@@ -169,16 +147,9 @@
       // QR코드 생성부분
       qrcodeDiv.innerHTML = '';
       let qrSize = getQRSize();
-      QRCode.toCanvas(
-        jsonStr,
-        { 
-          width: qrSize,
-          color: {
-            light: '#fefde1'
-        } 
-      }, 
+      QRCode.toCanvas(jsonStr,{width: qrSize,}, 
         function (error, canvas) {
-        if (error || !carSelect.value) {
+        if (error || !busSelect.value) {
           qrcodeDiv.innerHTML = 'ERROR! 올바르게 선택했는지 확인하세요.';
           return;
         }
@@ -186,8 +157,8 @@
       });
 
       // QR 재확인
-      if (carSelect.value && carSelect.value !== "0"){
-      jsonTextDiv.textContent = carSelect.value+"호차 QR코드 생성 완료!";
+      if (busSelect.value && busSelect.value !== "0"){
+      jsonTextDiv.textContent = busSelect.value+"호차 QR코드 생성 완료!";
       jsonTextDiv.style.textAlign = "center";
       }
     });
@@ -198,7 +169,6 @@
         generateBtn.click();
       }
     });
-
   </script>
 </body>
 </html>
